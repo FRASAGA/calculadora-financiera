@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Matematica financiera</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="jquery-3.3.1.min.js"></script>
+	<link rel="stylesheet" href="bootstrap-4.2.1-dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<script src="bootstrap-4.2.1-dist/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+	<div id="interes_simple">
+		<label>Calcular:</label>
+		<select id="tipo_calculo">
+			<option value="null" selected> - </option>
+			<option value="ints">Interes</option>
+			<option value="caps">Capital</option>
+			<option value="times">Tiempo</option>
+			<option value="tasas">Tasa de interes</option>
+		</select>
+		<br>
+		<label class="inters">Interes: </label>&nbsp;<input type="number" id="interes" class="inters"><br>
+		<label class="caps">Capital: </label>&nbsp;<input type="number" id="caps" min="0" class="caps"><br>
+		<label class="times">Tiempo: </label>&nbsp;<input type="number" id="times" class="times">
+		<span class="times">
+			<input type="radio" name="time" value="month" checked> Mes(es) &nbsp;&nbsp;
+			<input type="radio" name="time" value="trimonth"> Bimestre(s) &nbsp;&nbsp;
+			<input type="radio" name="time" value="semester"> Semestre(s) &nbsp;&nbsp;
+			<input type="radio" name="time" value="year" > A&ntilde;o(s) <br>
+		</span>
+		
+		<span class="tasa">
+			<label>Tasa de Interes: </label>&nbsp;<input type="number" id="tasas" min="0">&nbsp;&nbsp;
+			<input type="radio" name="t_interes" value="month"> Mensual &nbsp;&nbsp;
+			<input type="radio" name="t_interes" value="trimonth"> Trimestral &nbsp;&nbsp;
+			<input type="radio" name="t_interes" value="semester"> Semestral &nbsp;&nbsp;
+			<input type="radio" name="t_interes" value="year" checked> Anual <br>
+		</span>		
+
+		<input type="button" id="bCalcular" value="calcular!" class="btn btn-info" ><br>
+
+		<label name="resultLabel">Placeholder</label>
+		<input type="text" id="resultInput">
+
+	</div>
+</body>
+
+<!--behavior -->
+<script>
+	var tiempo = 0;
+	$(document).ready(function(){
+		ocultar('null');
+	});
+
+	$("#bCalcular").click(function()
+		{
+			var tipo = document.getElementById("tipo_calculo").value;
+			var valor1, valor2, valor3;
+			var op = '';
+			if (tipo == 'ints') 
+			{
+				op='1';
+				$("#ints").val();
+				valor1 = Number($("#caps").val());
+				valor2 = Number($("#times").val());
+				valor3 = Number($("#tasas").val());
+			}
+			else if (tipo == 'caps') 
+			{
+				op='2';
+				valor1 = Number($("#ints").val());
+				valor2 = Number($("#times").val());
+				valor3 = Number($("#tasas").val());
+			}
+			else if (tipo == 'times') 
+			{
+				op='3';
+				valor1 = Number($("#ints").val());
+				valor2 = Number($("#caps").val());
+				valor3 = Number($("#tasas").val());
+			}
+			else if (tipo == 'tasas') 
+			{
+				op='4';
+				valor1 = Number($("#ints").val());
+				valor2 = Number($("#caps").val());
+				valor3 = Number($("#times").val());
+			}
+
+			calcular(valor1,valor2,valor3,op);
+		});
+
+	function borrar()
+	{
+		
+	};
+	function ocultar(tipo)
+	{
+		if (tipo == 'ints')
+		{
+		 	$("#interes").val();
+		 	$("#interes").attr("disabled","true");
+		 	$(".caps").removeAttr("disabled");
+		 	$(".times").removeAttr("disabled","false");
+		 	$("#tasas").removeAttr("disabled","false");
+		 	//alert("Interes es el calculo");
+		}
+		else if (tipo =='caps')
+		{
+			$(".caps").attr("disabled","true");
+			$("#interes").removeAttr("disabled","false");
+			$(".times").removeAttr("disabled","false");			
+		 	$("#tasas").removeAttr("disabled","false");
+		}
+		else if (tipo =='times') 
+		{
+			$(".times").attr("disabled","true");
+			$("#interes").attr("disabled");			
+		 	$("#tasas").attr("disabled");
+		 	$(".caps").removeAttr("disabled")
+		}
+		else if (tipo =='tasas') 
+		{
+			$("#interes").val(tipo);
+			$("#tasas").attr("disabled","true");
+			$("#interes").removeAttr("disabled","false");
+			$(".caps").removeAttr("disabled","false");
+		 	$(".times").removeAttr("disabled","false");
+		}
+		else
+		{
+			$("#interes").attr("disabled","true");
+			$(".caps").attr("disabled","true");
+			$(".times").attr("disabled","true");
+			$("#tasas").attr("disabled","true");
+
+		}
+	}
+	$("#tipo_calculo").change(function()
+		{
+			var tipo = document.getElementById("tipo_calculo").value;
+			ocultar(tipo);
+		});
+	
+	function calcular(valor1,valor2,valor3,tipoc)
+	{
+		var results;
+		if (tipoc == '1' ) 
+		{
+			results = valor1*valor2*valor3;
+			$("#interes").val(results);
+		}
+		else if (tipoc == '2') 
+		{	
+			results= valor1/(valor2*valor3);
+			$("#caps").val(results);
+		}
+		else if (tipoc == '3') 
+		{
+			results= valor1/(valor2*valor3);
+			$("#times").val(results);
+		}
+		else if (tipoc == '4') 
+		{
+			results= valor1/(valor2*valor3);
+			$("#tasas").val(results);
+		}
+
+	}
+
+</script>
+</html>
